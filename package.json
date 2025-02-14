@@ -1,0 +1,24 @@
+{
+  "name": "75245-proyecto-final-ch",
+  "version": "1.0.0",
+  "description": "Backend I - Proyecto final",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabizinyk/75245-proyecto-final-ch.git"
+  },
+  "author": "Gabi Zinyk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gabizinyk/75245-proyecto-final-ch/issues"
+  },
+  "homepage": "https://github.com/gabizinyk/75245-proyecto-final-ch#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

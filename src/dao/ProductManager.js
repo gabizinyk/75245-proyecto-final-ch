@@ -1,0 +1,22 @@
+const fs = require('fs/promises');
+
+class ProductManager {
+    constructor(path){
+        this.path = path
+    }
+
+    async getProducts(){
+        try {
+            const products = await fs.readFile(this.path, 'utf-8')
+            return (products)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async addProducts(){
+        const products = this.getProducts()
+    }
+}
+
+module.exports = ProductManager
