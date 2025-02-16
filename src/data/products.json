@@ -1,1 +1,35 @@
-[{}]
+[
+  {
+    "id": 1,
+    "title": "",
+    "description": "",
+    "code": "",
+    "price": 200,
+    "status": true,
+    "stock": 3,
+    "category": "",
+    "thumbnails": ["picture1.jpg", "picture2.jpg", "picture3.jpg"]
+  },
+  {
+    "id": 2,
+    "title": "",
+    "description": "",
+    "code": "",
+    "price": 200,
+    "status": true,
+    "stock": 3,
+    "category": "",
+    "thumbnails": ["picture1.jpg", "picture2.jpg", "picture3.jpg"]
+  },
+  {
+    "id": 3,
+    "title": "",
+    "description": "",
+    "code": "",
+    "price": 200,
+    "status": true,
+    "stock": 3,
+    "category": "",
+    "thumbnails": ["picture1.jpg", "picture2.jpg", "picture3.jpg"]
+  }
+]
