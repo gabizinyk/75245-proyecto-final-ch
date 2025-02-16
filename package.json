@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/gabizinyk/75245-proyecto-final-ch#readme",
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "uuid": "^11.0.5"
   }
 }
