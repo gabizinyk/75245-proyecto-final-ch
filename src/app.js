@@ -6,14 +6,15 @@ const app = express();
 app.use(express.json());
 const PORT = 8000;
 
+//Products
 app.get("/api/products", async (req, res) => {
-  let products = await productManager.getProducts();
+  const products = await productManager.getProducts();
   res.status(200).send(products);
 });
 
 app.get("/api/products/:pid", async (req, res) => {
-  let { pid } = req.params;
-  let product = await productManager.getProductsById(pid);
+  const { pid } = req.params;
+  const product = await productManager.getProductsById(pid);
 
   if (!product) {
     res.status(404).send("No existe el producto");
@@ -24,7 +25,7 @@ app.get("/api/products/:pid", async (req, res) => {
 });
 
 app.post("/api/products", async (req, res) => {
-  let { title, description, code, price, status, stock, category, thumbnails } =
+  const { title, description, code, price, status, stock, category, thumbnails } =
     req.body;
   await productManager.addProduct(
     title,
@@ -36,9 +37,39 @@ app.post("/api/products", async (req, res) => {
     category,
     thumbnails
   );
- 
+
   res.status(200).send("Producto agregado exitosamente");
 });
+
+app.put("/api/products/:pid", async (req, res) => {
+  const { title, description, code, price, status, stock, category, thumbnails } =
+    req.body;
+  const { pid } = req.params;
+
+  await productManager.modifyProduct(
+    pid,
+    title,
+    description,
+    code,
+    price,
+    status,
+    stock,
+    category,
+    thumbnails
+  );
+
+  res.status(201).send("Producto modificado satisfactoriamente");
+});
+
+app.delete("/api/products/:pid", async(req, res) => {
+  const {pid} = req.params
+
+  await productManager.deleteProduct(pid)
+
+  res.status(201).send("Producto eliminado satisfactoriamente")
+})
+
+//Cart
 
 app.listen(PORT, () => {
   console.log(`Ejecutando app en el puerto ${PORT}`);
