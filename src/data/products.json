@@ -1,68 +1,99 @@
 [
-  {
-   "id": "6d8a8073-8466-4cfc-b148-970726b0b5a3",
-    "title": "Camiseta de algodón orgánico",
-    "description": "Camiseta suave y cómoda, ideal para el día a día.",
-    "code": 12345,
-    "price": 19.99,
-    "status": true,
-    "stock": 20,
-    "category": "Ropa",
-    "thumbnails": ["camiseta1.jpg", "camiseta2.jpg"]
-  },
-  {
-   "id": "fa30de18-2cfb-4455-be3b-68fff7b4b8e6",
-    "title": "Pantalón jeans clásico",
-    "description": "Pantalón denim de corte regular.",
-    "code": 67890,
-    "price": 39.99,
-    "status": false,
-    "stock": 0,
-    "category": "Ropa",
-    "thumbnails": ["pantalon1.jpg"]
-  },
-  {
-    "id": "d2b5ce27-55a0-4445-89e7-cfd35b8e7518",
-    "title": "Zapatillas deportivas",
-    "description": "Zapatillas cómodas y ligeras para hacer deporte.",
-    "code": 112233,
-    "price": 59.99,
-    "status": true,
-    "stock": 15,
-    "category": "Calzado",
-    "thumbnails": ["zapato1.jpg", "zapato2.jpg"]
-  },
-  {
-    "title": "Reloj inteligente",
-    "description": "Reloj con múltiples funciones para deportistas.",
-    "code": 445566,
-    "price": 199.99,
-    "status": true,
-    "stock": 10,
-    "category": "Electrónica",
-    "thumbnails": ["reloj1.jpg"],
-    "id": "6d8a8073-8466-4cfc-b148-970726b0b5a3"
-  },
-  {
-    "id": "467eb271-d9ba-474a-960e-c50854ed1931",
-    "title": "Bolsa de viaje",
-    "description": "Bolsa resistente y espaciosa para tus viajes.",
-    "code": 778899,
-    "price": 49.99,
-    "status": true,
-    "stock": 8,
-    "category": "Accesorios",
-    "thumbnails": ["bolsa1.jpg", "bolsa2.jpg"]
-  },
-  {
-    "id": "0982e48e-627d-4db7-b937-ef289e8d5ba1",
-    "title": "Libro de cocina",
-    "description": "Recetas deliciosas y fáciles de preparar.",
-    "code": 223344,
-    "price": 14.99,
-    "status": true,
-    "stock": 30,
-    "category": "Libros",
-    "thumbnails": ["libro1.jpg"]
-  }
+   {
+      "id": "6d8a8073-8466-4cfc-b148-970726b0b5a3",
+      "title": "Camiseta de algodón orgánico",
+      "description": "Camiseta suave y cómoda, ideal para el día a día.",
+      "code": 12345,
+      "price": 19.99,
+      "status": true,
+      "stock": 20,
+      "category": "Ropa",
+      "thumbnails": [
+         "camiseta1.jpg",
+         "camiseta2.jpg"
+      ]
+   },
+   {
+      "id": "fa30de18-2cfb-4455-be3b-68fff7b4b8e6",
+      "title": "Pantalón jeans clásico",
+      "description": "Pantalón denim de corte regular.",
+      "code": 67890,
+      "price": 39.99,
+      "status": false,
+      "stock": 0,
+      "category": "Ropa",
+      "thumbnails": [
+         "pantalon1.jpg"
+      ]
+   },
+   {
+      "id": "d2b5ce27-55a0-4445-89e7-cfd35b8e7518",
+      "title": "Zapatillas deportivas",
+      "description": "Zapatillas cómodas y ligeras para hacer deporte.",
+      "code": 112233,
+      "price": 59.99,
+      "status": true,
+      "stock": 15,
+      "category": "Calzado",
+      "thumbnails": [
+         "zapato1.jpg",
+         "zapato2.jpg"
+      ]
+   },
+   {
+      "title": "Reloj inteligente",
+      "description": "Reloj con múltiples funciones para deportistas.",
+      "code": 445566,
+      "price": 199.99,
+      "status": true,
+      "stock": 10,
+      "category": "Electrónica",
+      "thumbnails": [
+         "reloj1.jpg"
+      ],
+      "id": "6d8a8073-8466-4cfc-b148-970726b0b5a3"
+   },
+   {
+      "id": "467eb271-d9ba-474a-960e-c50854ed1931",
+      "title": "Bolsa de viaje",
+      "description": "Bolsa resistente y espaciosa para tus viajes.",
+      "code": 778899,
+      "price": 49.99,
+      "status": true,
+      "stock": 8,
+      "category": "Accesorios",
+      "thumbnails": [
+         "bolsa1.jpg",
+         "bolsa2.jpg"
+      ]
+   },
+   {
+      "id": "0982e48e-627d-4db7-b937-ef289e8d5ba1",
+      "title": "Libro de cocina",
+      "description": "Recetas deliciosas y fáciles de preparar.",
+      "code": 223344,
+      "price": 14.99,
+      "status": true,
+      "stock": 30,
+      "category": "Libros",
+      "thumbnails": [
+         "libro1.jpg"
+      ]
+   },
+   {
+      "id": "4b101c1d-dcbe-41c5-a821-6aecfa9ff7f2",
+      "title": "Camiseta de lino fino",
+      "description": "Camiseta suave y cómoda, ideal para el día a día.",
+      "code": "12345",
+      "price": 30,
+      "status": true,
+      "stock": 2,
+      "category": "Ropa",
+      "thumbnails": [
+         "camiseta1.jpg",
+         "camiseta2.jpg",
+         "camiseta3.jpg",
+         "camiseta4.jpg"
+      ]
+   }
 ]

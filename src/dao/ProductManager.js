@@ -7,24 +7,24 @@ class ProductManager {
   }
 
   async getProducts() {
-    try {
-      const products = await fs.readFile(this.path, "utf-8");
-      return products;
-    } catch (error) {
-      console.log(error);
+    if (!this.path) {
+      return [];
     }
+
+    const products = await fs.readFile(this.path, "utf-8");
+    return JSON.parse(products);
   }
 
   async getProductsById(pid) {
-    if (!pid) {
-      console.log("No se ha ingresado un ID");
-      return;
+    let products = await this.getProducts();
+
+    let product = products.find((p) => p.id == pid);
+
+    if (product === undefined) {
+      return [];
     }
 
-    let products = await this.getProducts();
-    let product = JSON.parse(products).find((p) => p.id === pid);
-
-    return !product ? console.log("No existe el producto") : product;
+    return product;
   }
 
   async addProduct(
@@ -37,22 +37,7 @@ class ProductManager {
     category,
     thumbnails
   ) {
-    if (
-      !title ||
-      !description ||
-      !code ||
-      !price ||
-      !status ||
-      !stock ||
-      !category ||
-      !thumbnails
-    ) {
-      console.log("Deben ser ingresados todos los campos");
-      return;
-    }
-    // Validaciones
     let products = await this.getProducts();
-    let data = JSON.parse(products);
 
     let newProduct = {
       id: uuidv4(),
@@ -66,10 +51,17 @@ class ProductManager {
       thumbnails: thumbnails,
     };
 
-    data.push(newProduct);
-    let productAdded = JSON.stringify(data, null, 3);
+    products.push(newProduct);
+    let productAdded = JSON.stringify(products, null, 3);
 
-    await fs.writeFile(this.path, productAdded, "utf-8");
+    await fs.writeFile(this.path, productAdded, "utf-8", (err) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+
+      console.log("Se escribió el archivo correctamente");
+    });
   }
 
   async modifyProduct(
@@ -83,15 +75,9 @@ class ProductManager {
     category,
     thumbnails
   ) {
-    if (!pid || pid === "") {
-      console.log("Se debe ingresar un ID");
-      return;
-    }
-
     let products = await this.getProducts();
-    let data = JSON.parse(products);
 
-    data.map((p) => {
+    products.map((p) => {
       if (p.id === pid) {
         p.title = title || p.title;
         p.description = description || p.description;
@@ -104,23 +90,33 @@ class ProductManager {
       }
     });
 
-    let productModified = JSON.stringify(data, null, 3);
+    let productModified = JSON.stringify(products, null, 3);
 
-    await fs.writeFile(this.path, productModified, "utf-8");
+    await fs.writeFile(this.path, productModified, "utf-8", (err) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      console.log("Se escribió el archivo correctamente");
+    });
   }
 
-  async deleteProduct(pid){
-    if(!pid){
-      console.log("Se debe ingresar un ID");
-      return;
-    }
-
+  async deleteProduct(pid) {
     let products = await this.getProducts();
-    let data = JSON.parse(products);
 
-    let productDeleted = JSON.stringify(data.filter((p) => p.id !== pid), null, 3)
+    let productDeleted = JSON.stringify(
+      products.filter((p) => p.id != pid),
+      null,
+      3
+    );
 
-    await fs.writeFile(this.path, productDeleted, "utf8")
+    await fs.writeFile(this.path, productDeleted, "utf8", (err) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      console.log("Se escribió el archivo correctamente");
+    });
   }
 }
 
