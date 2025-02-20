@@ -5,7 +5,7 @@ const classCartManager = require("./dao/CartManager.js");
 const cartManager = new classCartManager("./src/data/carts.json");
 
 const app = express();
-const PORT = 8000;
+const PORT = 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -54,6 +54,11 @@ app.post("/api/products", async (req, res) => {
     thumbnails,
   } = req.body;
 
+  //Valida que no repita el parámetro 'code'
+  const isCode = (products, code) => {
+    return products.some((p) => p.code == code);
+  };
+
   if (
     !title ||
     !description ||
@@ -65,16 +70,19 @@ app.post("/api/products", async (req, res) => {
     !thumbnails
   ) {
     res.setHeader("Content-Type", "application/json");
-    res.status(201).json({ Msg: "Todos los campos son obligatorios" });
+    res.status(400).json({ Msg: "Todos los campos son obligatorios" });
     return;
   }
-
-  console.log(isNaN(price));
-  console.log(isNaN(stock));
 
   if (isNaN(stock) || isNaN(price) || typeof status != "boolean") {
     res.setHeader("Content-Type", "application/json");
     res.status(400).json({ Msg: "El valor del campo debe ser el indicado" });
+    return;
+  }
+
+  if (isCode(await productManager.getProducts(), code)) {
+    res.setHeader("Content-Type", "application/json");
+    res.status(400).json({ Msg: "Ya existe un producto con el mismo código" });
     return;
   }
 
@@ -198,7 +206,7 @@ app.post("/api/carts", async (req, res) => {
   }
 });
 
-app.post("/api/:cid/product/:pid", async (req, res) => {
+app.post("/api/carts/:cid/product/:pid", async (req, res) => {
   const { cid, pid } = req.params;
 
   try {
