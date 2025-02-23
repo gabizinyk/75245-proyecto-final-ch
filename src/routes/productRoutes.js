@@ -5,15 +5,13 @@ const productManager = new classProductManager("./src/data/products.json");
 const router = Router();
 
 router.get("/", async (req, res) => {
-    const products = await productManager.getProducts();
   try {
-
+    const products = await productManager.getProducts();
     res.setHeader("Content-Type", "application/json");
     res.status(200).json({ products });
   } catch (err) {
     res.setHeader("Content-Type", "application/json");
     res.status(500).json({ Error: "Error del servidor" });
-    console.log(products)
   }
 });
 
