@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/app.js",
-    "dev": "node --watch ./src/app.js"
+    "dev": "nodemon ./src/app.js"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,9 @@
   "homepage": "https://github.com/gabizinyk/75245-proyecto-final-ch#readme",
   "dependencies": {
     "express": "^4.21.2",
+    "express-handlebars": "^8.0.1",
     "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.9",
     "uuid": "^11.0.5"
   }
 }
