@@ -66,34 +66,5 @@
          "bolsa1.jpg",
          "bolsa2.jpg"
       ]
-   },
-   {
-      "id": "0982e48e-627d-4db7-b937-ef289e8d5ba1",
-      "title": "Libro de cocina",
-      "description": "Recetas deliciosas y fáciles de preparar.",
-      "code": 223344,
-      "price": 14.99,
-      "status": true,
-      "stock": 30,
-      "category": "Libros",
-      "thumbnails": [
-         "libro1.jpg"
-      ]
-   },
-   {
-      "id": "4b101c1d-dcbe-41c5-a821-6aecfa9ff7f2",
-      "title": "Camiseta de lino fino",
-      "description": "Camiseta suave y cómoda, ideal para el día a día.",
-      "code": "12345",
-      "price": 30,
-      "status": true,
-      "stock": 2,
-      "category": "Ropa",
-      "thumbnails": [
-         "camiseta1.jpg",
-         "camiseta2.jpg",
-         "camiseta3.jpg",
-         "camiseta4.jpg"
-      ]
    }
 ]

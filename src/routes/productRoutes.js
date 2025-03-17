@@ -89,9 +89,12 @@ router.post("/", async (req, res) => {
       category,
       thumbnails
     );
-
+ 
     res.setHeader("Content-Type", "application/json");
     res.status(201).json({ Msg: "Se añadió el producto correctamente" });
+    
+    //Emito el evento para que se actualice la lista de productos en tiempo real
+    req.io.emit("newProducts");
   } catch (err) {
     res.setHeader("Content-Type", "application/json");
     res.status(500).json({ Error: "Error del servidor" });
@@ -159,6 +162,9 @@ router.delete("/:pid", async (req, res) => {
 
     res.setHeader("Content-Type", "application/json");
     res.status(201).json({ Msg: "Se eliminó el producto correctamente" });
+
+    //Emito el evento para que se actualice la lista de productos en tiempo real
+    req.io.emit("deletedProducts");
   } catch (error) {
     res.setHeader("Content-Type", "application/json");
     res.status(500).json({ Error: "Error del servidor" });
