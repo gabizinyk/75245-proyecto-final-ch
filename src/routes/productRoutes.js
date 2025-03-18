@@ -35,7 +35,7 @@ router.get("/:pid", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const {
+  let {
     title,
     description,
     code,
@@ -43,7 +43,7 @@ router.post("/", async (req, res) => {
     status,
     stock,
     category,
-    thumbnails,
+    thumbnailsPath,
   } = req.body;
 
   //Valida que no repita el parámetro 'code'
@@ -59,16 +59,30 @@ router.post("/", async (req, res) => {
     !status ||
     !stock ||
     !category ||
-    !thumbnails
+    !thumbnailsPath
   ) {
     res.setHeader("Content-Type", "application/json");
     res.status(400).json({ Msg: "Todos los campos son obligatorios" });
     return;
   }
 
-  if (isNaN(stock) || isNaN(price) || typeof status != "boolean") {
+  if (isNaN(stock) || isNaN(price)) {
     res.setHeader("Content-Type", "application/json");
-    res.status(400).json({ Msg: "El valor del campo debe ser el indicado" });
+    res.status(400).json({ Msg: "El valor del campo debe ser numérico" });
+    return;
+  }
+
+  if (status === "true") {
+    status = true;
+  }
+
+  if (status === "false") {
+    status = false;
+  }
+
+  if (typeof status != "boolean") {
+    res.setHeader("Content-Type", "application/json");
+    res.status(400).json({ Msg: "El valor del campo debe ser tipo boolean" });
     return;
   }
 
@@ -77,6 +91,10 @@ router.post("/", async (req, res) => {
     res.status(400).json({ Msg: "Ya existe un producto con el mismo código" });
     return;
   }
+
+  let thumbnails = [];
+
+  thumbnails.push(thumbnailsPath);
 
   try {
     await productManager.addProduct(
@@ -89,10 +107,10 @@ router.post("/", async (req, res) => {
       category,
       thumbnails
     );
- 
+
     res.setHeader("Content-Type", "application/json");
     res.status(201).json({ Msg: "Se añadió el producto correctamente" });
-    
+
     //Emito el evento para que se actualice la lista de productos en tiempo real
     req.io.emit("newProducts");
   } catch (err) {

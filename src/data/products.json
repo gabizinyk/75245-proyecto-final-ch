@@ -54,17 +54,16 @@
       "id": "6d8a8073-8466-4cfc-b148-970726b0b5a3"
    },
    {
-      "id": "467eb271-d9ba-474a-960e-c50854ed1931",
-      "title": "Bolsa de viaje",
-      "description": "Bolsa resistente y espaciosa para tus viajes.",
-      "code": 778899,
-      "price": 49.99,
+      "id": "11e1af81-8cdf-472d-860d-330760ef5479",
+      "title": "Telefono inteligente",
+      "description": "Telefono marca china para usar debajo del agua",
+      "code": "43140",
+      "price": "20.00",
       "status": true,
-      "stock": 8,
-      "category": "Accesorios",
+      "stock": "42",
+      "category": "Telefonos inteligentes",
       "thumbnails": [
-         "bolsa1.jpg",
-         "bolsa2.jpg"
+         "Imagen1.jpg"
       ]
    }
 ]
