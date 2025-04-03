@@ -1,11 +1,11 @@
 const { Router } = require("express");
 const CartManagerMongo = require("../dao/CartManagerMongo.js");
 const { isCartWithId } = require("../middleware/cartValidations.js");
-const { plugin } = require("mongoose");
+const { checkIdLength } = require("../middleware/idValidations.js");
 
 const router = Router();
 
-router.get("/:cid", isCartWithId, async (req, res) => {
+router.get("/:cid", checkIdLength, isCartWithId, async (req, res) => {
   const { cid } = req.params;
 
   try {
@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/:cid/product/:pid", isCartWithId, async (req, res) => {
+router.post("/:cid/product/:pid", checkIdLength, isCartWithId, async (req, res) => {
   const { cid, pid } = req.params;
 
   try {
@@ -40,10 +40,11 @@ router.post("/:cid/product/:pid", isCartWithId, async (req, res) => {
   } catch (error) {
     res.setHeader("Content-Type", "application/json");
     res.status(500).json({ Error: "Error del servidor" });
+    console.log(error)
   }
 });
 
-router.delete("/:cid/products/:pid", isCartWithId, async (req, res) => {
+router.delete("/:cid/product/:pid", checkIdLength, isCartWithId, async (req, res) => {
   const { cid, pid } = req.params;
 
   let existProduct = await CartManagerMongo.getCartBy({ _id: cid, 'products.product': pid});
@@ -67,7 +68,7 @@ router.delete("/:cid/products/:pid", isCartWithId, async (req, res) => {
   }
 });
 
-router.delete("/:cid", isCartWithId, async (req, res) => {
+router.delete("/:cid", checkIdLength, isCartWithId, async (req, res) => {
   const { cid } = req.params;
 
   try {
@@ -81,7 +82,7 @@ router.delete("/:cid", isCartWithId, async (req, res) => {
   }
 });
 
-router.put("/:cid", isCartWithId, async (req, res) => {
+router.put("/:cid", checkIdLength, isCartWithId, async (req, res) => {
   const { cid } = req.params;
   let { products } = req.body;
 
@@ -117,7 +118,7 @@ router.put("/:cid", isCartWithId, async (req, res) => {
   } 
 });
 
-router.put("/:cid/products/:pid", isCartWithId, async (req, res) => {
+router.put("/:cid/product/:pid", checkIdLength, isCartWithId, async (req, res) => {
   const { cid, pid } = req.params;
   let { newQuantity } = req.body;
 

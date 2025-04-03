@@ -2,14 +2,16 @@ const { Router } = require("express");
 const ProductManagerMongo = require("../dao/ProductManagerMongo");
 const {
   fieldValidations,
+  fieldModifyValidations,
   isProductWithSameCode,
   isProductWithId,
 } = require("../middleware/productValidations");
+const { checkIdLength } = require("../middleware/idValidations");
 
 const router = Router();
 
 router.get("/", async (req, res) => {
-  let { limit, page, query, sort } = req.query;
+  let { limit, page, sort } = req.query;
 
   try {
     if (limit) {
@@ -21,7 +23,7 @@ router.get("/", async (req, res) => {
         return;
       }
 
-      let products = await ProductManagerMongo.getProducts(1, limit);
+      let products = await ProductManagerMongo.getProducts(page || 1, limit, sort || 1);
 
       res.setHeader("Content-Type", "application/json");
       res.status(200).json(products);
@@ -37,23 +39,44 @@ router.get("/", async (req, res) => {
         return;
       }
 
-      let products = await ProductManagerMongo.getProducts(page, 10);
+      let products = await ProductManagerMongo.getProducts(page, limit || 10, sort || 1);
       res.setHeader("Content-Type", "application/json");
       res.status(200).json(products);
       return;
     }
 
-    let products = await ProductManagerMongo.getProducts(1, 10);
+    if (sort) {
+      if(sort != 'asc' && sort != 'desc') {
+        res.setHeader("Content-Type", "application/json");
+        res.status(400).json({ Msg: "El ordenamiento debe ser 'asc' o 'desc'" });
+        return;
+      }
+
+      if(sort.toLowerCase() === 'asc'){
+        let products = await ProductManagerMongo.getProducts(page || 1, limit || 10, 1);
+        res.setHeader("Content-Type", "application/json");
+        res.status(200).json(products);
+        return;
+      } else {
+        let products = await ProductManagerMongo.getProducts(page || 1, limit || 10, -1);
+        res.setHeader("Content-Type", "application/json");
+        res.status(200).json(products);
+        return;
+      }
+    } 
+
+    let products = await ProductManagerMongo.getProducts(1, 10, 1);
 
     res.setHeader("Content-Type", "application/json");
     res.status(200).json(products);
   } catch (err) {
     res.setHeader("Content-Type", "application/json");
     res.status(500).json({ Error: "Error del servidor" });
+    console.log(err)
   }
 });
 
-router.get("/:pid", async (req, res) => {
+router.get("/:pid", checkIdLength, async (req, res) => {
   const { pid } = req.params;
 
   try {
@@ -103,7 +126,7 @@ router.post("/", fieldValidations, isProductWithSameCode, async (req, res) => {
   }
 });
 
-router.put("/:pid", isProductWithId, async (req, res) => {
+router.put("/:pid", checkIdLength, isProductWithId, fieldModifyValidations, async (req, res) => {
   let {
     title,
     description,
@@ -138,9 +161,9 @@ router.put("/:pid", isProductWithId, async (req, res) => {
   }
 });
 
-router.delete("/:pid", isProductWithId, async (req, res) => {
+router.delete("/:pid", checkIdLength, isProductWithId, async (req, res) => {
   const { pid } = req.params;
-  console.log('ejecuta')
+
   try {
     await ProductManagerMongo.deleteProduct({_id: pid});
 

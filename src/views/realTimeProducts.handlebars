@@ -30,7 +30,7 @@
   <input type="text" name="category" id="category" required/>
 
   <label for="thumbnailsPath">Imágenes:</label>
-  <input type="text" name="thumbnailsPath" id="thumbnailsPath" required/>
+  <input type="text" name="thumbnails" id="thumbnails" required/>
   
   <input type="submit" value="Crear">
 </form>
@@ -48,6 +48,19 @@
     <button type="button" class="btn-delete">Eliminar</button>
   </ul>
 {{/each}}
+
+<a href="/realTimeProducts?page=1">Pág. 1</a>
+
+
+{{#if hasPrevPage}}
+    <a href="/realTimeProducts?page={{prevPage}}">Pág. Ant.</a>
+{{/if}}
+
+{{#if hasNextPage}}
+    <a href="/realTimeProducts?page={{nextPage}}">Pág. Sig.</a>
+{{/if}}
+
+<a href="/realTimeProducts?page={{totalPages}}">Últ. pág.</a>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/products.js"></script>

@@ -5,16 +5,6 @@ const { isCartWithId } = require("../middleware/cartValidations");
 const router = Router();
 
 router.get("/products", async (req, res) => {
-  let { page, limit } = req.query;
-
-  if (!page) {
-    page = 1;
-  }
-
-  if (!limit) {
-    limit = 10;
-  }
-
   let {
     docs: products,
     totalPages,
@@ -22,7 +12,7 @@ router.get("/products", async (req, res) => {
     nextPage,
     hasPrevPage,
     prevPage,
-  } = await ProductManagerMongo.getProducts(page, limit);
+  } = await ProductManagerMongo.getProducts(1, 10, 1);
   res.render("index", {
     products,
     totalPages,
@@ -33,22 +23,31 @@ router.get("/products", async (req, res) => {
   });
 });
 
-router.get("/carts/:cid", isCartWithId, async (req,res) => {
+router.get("/carts/:cid", isCartWithId, async (req, res) => {
   let { cid } = req.params;
 
-  let { products } = await CartManagerMongo.getCartBy({_id: cid}); 
-
-  if(!products) {}
-
-  console.log(products)
-  
+  let { products } = await CartManagerMongo.getCartBy({ _id: cid });
   res.render("cart", { products, cid });
 });
 
-/* router.get("/realTimeProducts", async (req, res) => {
-  const products = await productManager.getProducts();
-  res.render("realTimeProducts", {products});
-}); */
+router.get("/realTimeProducts", async (req, res) => {
+  let {
+    docs: products,
+    totalPages,
+    hasNextPage,
+    nextPage,
+    hasPrevPage,
+    prevPage,
+  } = await ProductManagerMongo.getProducts(1, 10, 1);
+  res.render("realTimeProducts", {
+    products,
+    totalPages,
+    hasNextPage,
+    nextPage,
+    hasPrevPage,
+    prevPage,
+  });
+});
 
 router.get("/uploads", async (req, res) => {
   res.render("uploads");

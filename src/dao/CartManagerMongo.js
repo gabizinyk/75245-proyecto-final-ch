@@ -10,7 +10,8 @@ class CartManagerMongo {
   }
 
   static async addProductToCart(cid, pid) {
-    let cart = await this.getCartBy({ _id: cid });
+    //No uso el getCartBy() ya que esta configurado con .lean()
+    let cart = await Cart.findOne({ _id: cid }).populate("products.product");
     let quantity = 1;
 
     //Verifico si el producto existe

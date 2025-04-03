@@ -7,7 +7,7 @@ const path = require('path');
 const handlebars = require('express-handlebars');
 const { Server } = require('socket.io');
 const { createServer } = require('http');
-const connectDB = require("./config/databse.js");
+const connectDB = require("./config/database.js");
 
 const app = express();
 const server = createServer(app);
@@ -30,7 +30,7 @@ app.use("/api/carts", cartRouter);
 app.use("/api/uploads", uploadsRouter);
 app.use("/", viewsRouter);
 
-//Me conecto a Mongo Atlas
+//Conexión con DB
 connectDB();
 
 server.listen(PORT, () => {
