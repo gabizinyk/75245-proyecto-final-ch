@@ -6,7 +6,6 @@ Este proyecto es un pequeño backend de carrito y productos en base al curso de 
 -   NodeJS
 -   MongoDB
 
-```
 
 ## Instalación de paquetes de NPM
 
@@ -38,3 +37,5 @@ npm run dev
 ```
 
 **Autor:** Gabriel Zinyk - Comisión 75245
+
+
