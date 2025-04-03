@@ -7,6 +7,7 @@ const path = require('path');
 const handlebars = require('express-handlebars');
 const { Server } = require('socket.io');
 const { createServer } = require('http');
+const connectDB = require("./config/databse.js");
 
 const app = express();
 const server = createServer(app);
@@ -24,9 +25,13 @@ app.use("/api/products", (req, res, next) => {
   req.io = io;
   next();
 }, productRouter);
+
 app.use("/api/carts", cartRouter);
 app.use("/api/uploads", uploadsRouter);
 app.use("/", viewsRouter);
+
+//Me conecto a Mongo Atlas
+connectDB();
 
 server.listen(PORT, () => {
   console.log(`Ejecutando app en el puerto ${PORT}`);

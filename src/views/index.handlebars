@@ -1,0 +1,32 @@
+<h2>Products</h2>
+<br>
+<h4>Listado de productos</h4>
+{{#each products}}
+  <ul class="product-card">
+    <li><strong>{{title}}</strong></li>
+    <li class="pid">{{id}}</li>
+    <li>{{price}}</li>
+    <li>{{description}}</li>
+    <li>{{code}}</li>
+    <li>{{category}}</li>
+    <label for="cartId"><strong>Ingrese ID del carrito:</strong></label>
+    <input type="text" name="cartId" class="cid">
+    <button type="button" class="btn-add-to-cart">Agregar al carrito</button>
+  </ul>
+{{/each}}
+
+<a href="/products?page=1">Pág. 1</a>
+
+
+{{#if hasPrevPage}}
+    <a href="/products?page={{prevPage}}">Pág. Ant.</a>
+{{/if}}
+
+{{#if hasNextPage}}
+    <a href="/products?page={{nextPage}}">Pág. Sig.</a>
+{{/if}}
+
+<a href="/products?page={{totalPages}}">Últ. pág.</a>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/products.js"></script>

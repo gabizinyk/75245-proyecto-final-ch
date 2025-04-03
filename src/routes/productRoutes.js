@@ -1,14 +1,52 @@
 const { Router } = require("express");
-const classProductManager = require("../dao/ProductManager");
-const productManager = new classProductManager("./src/data/products.json");
+const ProductManagerMongo = require("../dao/ProductManagerMongo");
+const {
+  fieldValidations,
+  isProductWithSameCode,
+  isProductWithId,
+} = require("../middleware/productValidations");
 
 const router = Router();
 
 router.get("/", async (req, res) => {
+  let { limit, page, query, sort } = req.query;
+
   try {
-    const products = await productManager.getProducts();
+    if (limit) {
+      limit = Number(limit);
+
+      if (isNaN(limit)) {
+        res.setHeader("Content-Type", "application/json");
+        res.status(400).json({ Msg: "El limit debe ser numérico" });
+        return;
+      }
+
+      let products = await ProductManagerMongo.getProducts(1, limit);
+
+      res.setHeader("Content-Type", "application/json");
+      res.status(200).json(products);
+      return;
+    }
+
+    if (page) {
+      page = Number(page);
+
+      if (isNaN(page)) {
+        res.setHeader("Content-Type", "application/json");
+        res.status(400).json({ Msg: "El page debe ser numérico" });
+        return;
+      }
+
+      let products = await ProductManagerMongo.getProducts(page, 10);
+      res.setHeader("Content-Type", "application/json");
+      res.status(200).json(products);
+      return;
+    }
+
+    let products = await ProductManagerMongo.getProducts(1, 10);
+
     res.setHeader("Content-Type", "application/json");
-    res.status(200).json({ products });
+    res.status(200).json(products);
   } catch (err) {
     res.setHeader("Content-Type", "application/json");
     res.status(500).json({ Error: "Error del servidor" });
@@ -17,87 +55,30 @@ router.get("/", async (req, res) => {
 
 router.get("/:pid", async (req, res) => {
   const { pid } = req.params;
-  try {
-    const product = await productManager.getProductsById(pid);
 
-    if (product.length == 0) {
+  try {
+    const product = await ProductManagerMongo.getProductsBy({ _id: pid });
+
+    if (product == null) {
       res.setHeader("Content-Type", "application/json");
-      res.status(404).json({ Error: "No se encontro el producto" });
+      res.status(404).json({ Msg: "No se encuentra el producto" });
       return;
     }
 
     res.setHeader("Content-Type", "application/json");
-    res.status(200).json({ product });
+    res.status(200).json(product);
   } catch (err) {
     res.setHeader("Content-Type", "application/json");
     res.status(500).json({ Error: "Error del servidor" });
   }
 });
 
-router.post("/", async (req, res) => {
-  let {
-    title,
-    description,
-    code,
-    price,
-    status,
-    stock,
-    category,
-    thumbnailsPath,
-  } = req.body;
-
-  //Valida que no repita el parámetro 'code'
-  const isCode = (products, code) => {
-    return products.some((p) => p.code == code);
-  };
-
-  if (
-    !title ||
-    !description ||
-    !code ||
-    !price ||
-    !status ||
-    !stock ||
-    !category ||
-    !thumbnailsPath
-  ) {
-    res.setHeader("Content-Type", "application/json");
-    res.status(400).json({ Msg: "Todos los campos son obligatorios" });
-    return;
-  }
-
-  if (isNaN(stock) || isNaN(price)) {
-    res.setHeader("Content-Type", "application/json");
-    res.status(400).json({ Msg: "El valor del campo debe ser numérico" });
-    return;
-  }
-
-  if (status === "true") {
-    status = true;
-  }
-
-  if (status === "false") {
-    status = false;
-  }
-
-  if (typeof status != "boolean") {
-    res.setHeader("Content-Type", "application/json");
-    res.status(400).json({ Msg: "El valor del campo debe ser tipo boolean" });
-    return;
-  }
-
-  if (isCode(await productManager.getProducts(), code)) {
-    res.setHeader("Content-Type", "application/json");
-    res.status(400).json({ Msg: "Ya existe un producto con el mismo código" });
-    return;
-  }
-
-  let thumbnails = [];
-
-  thumbnails.push(thumbnailsPath);
+router.post("/", fieldValidations, isProductWithSameCode, async (req, res) => {
+  let { title, description, code, price, status, stock, category, thumbnails } =
+    req.body;
 
   try {
-    await productManager.addProduct(
+    let product = {
       title,
       description,
       code,
@@ -105,8 +86,10 @@ router.post("/", async (req, res) => {
       status,
       stock,
       category,
-      thumbnails
-    );
+      thumbnails,
+    };
+
+    await ProductManagerMongo.addProduct(product);
 
     res.setHeader("Content-Type", "application/json");
     res.status(201).json({ Msg: "Se añadió el producto correctamente" });
@@ -116,11 +99,12 @@ router.post("/", async (req, res) => {
   } catch (err) {
     res.setHeader("Content-Type", "application/json");
     res.status(500).json({ Error: "Error del servidor" });
+    console.log(err);
   }
 });
 
-router.put("/:pid", async (req, res) => {
-  const {
+router.put("/:pid", isProductWithId, async (req, res) => {
+  let {
     title,
     description,
     code,
@@ -133,50 +117,32 @@ router.put("/:pid", async (req, res) => {
 
   const { pid } = req.params;
 
-  //Valido primero si el producto existe
-  const product = await productManager.getProductsById(pid);
-
-  if (product.length == 0) {
-    res.setHeader("Content-Type", "application/json");
-    res.status(404).json({ Msg: "No se encontró el producto" });
-    return;
-  }
-
   try {
-    await productManager.modifyProduct(
-      pid,
-      title,
-      description,
-      code,
-      price,
-      status,
-      stock,
-      category,
-      thumbnails
-    );
+    await ProductManagerMongo.modifyProduct({_id: pid}, {
+      title: title,
+      description: description,
+      code: code,
+      price: price,
+      status: status,
+      stock: stock,
+      category: category,
+      thumbnails: thumbnails,
+    });
 
     res.setHeader("Content-Type", "application/json");
     res.status(201).json({ Msg: "Producto modificado satisfactoriamente" });
-  } catch (error) {
+  } catch (err) {
     res.setHeader("Content-Type", "application/json");
     res.status(500).json({ Error: "Error del servidor" });
+    console.log(err)
   }
 });
 
-router.delete("/:pid", async (req, res) => {
+router.delete("/:pid", isProductWithId, async (req, res) => {
   const { pid } = req.params;
-
-  //Valido primero si el producto existe
-  const product = await productManager.getProductsById(pid);
-
-  if (product.length == 0) {
-    res.setHeader("Content-Type", "application/json");
-    res.status(404).json({ Msg: "No se encontró el producto" });
-    return;
-  }
-
+  console.log('ejecuta')
   try {
-    await productManager.deleteProduct(pid);
+    await ProductManagerMongo.deleteProduct({_id: pid});
 
     res.setHeader("Content-Type", "application/json");
     res.status(201).json({ Msg: "Se eliminó el producto correctamente" });
